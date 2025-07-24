@@ -2,7 +2,8 @@ import httpStatus from "http-status";
 import {User} from "../models/user.model.js";
 import bcrypt, {hash} from "bcrypt";
 import crypto from "crypto";
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+import { Meeting } from "../models/meeting.model.js";
 
 const login = async(req, res) => {
     const {username, password} = req.body;
@@ -61,6 +62,9 @@ const getUserHistory = async (req, res) => {
 
     try {
         const user = await User.findOne({ token: token });
+        if(!user){
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invlaid Token "});
+        }
         const meetings = await Meeting.find({ user_id: user.username })
         res.json(meetings)
     } catch (e) {
@@ -74,9 +78,13 @@ const addToHistory = async (req, res) => {
     try {
         const user = await User.findOne({ token: token });
 
+        if(!user) {
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid token "});
+        }
+
         const newMeeting = new Meeting({
             user_id: user.username,
-            meetingCode: meeting_code
+            meeting_code: meeting_code
         })
 
         await newMeeting.save();
