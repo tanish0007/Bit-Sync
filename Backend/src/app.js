@@ -6,6 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectToSocket } from './controllers/socketManager.js';
 import userRoutes from './routes/users.routes.js';
+import authRoutes from "./routes/auth.routes.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const io = connectToSocket(server);
 
 app.set("PORT", (process.env.PORT || 8080));
 
+app.use("/api/v1/auth", authRoutes);
 app.use(cors());
 app.use(express.json({limit: '40KB'}));
 app.use(express.urlencoded({limit: '40KB', extended: true}));
