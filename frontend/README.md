@@ -1,12 +1,33 @@
-# React + Vite
+** Project Structure
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📦src
+ ┣ 📁assets/                # Static assets like logo, icons, etc.
+ ┣ 📁components/            # Reusable UI components
+ ┃ ┣ 📁common/              # Buttons, Inputs, Modals, etc.
+ ┃ ┣ 📁auth/                # LoginForm, SignupForm, OTPForm
+ ┃ ┗ 📁video/               # VideoControls, ChatPanel, ParticipantsList, etc.
+ ┣ 📁pages/                 # Full page-level components
+ ┃ ┣ 📄Login.jsx
+ ┃ ┣ 📄Signup.jsx
+ ┃ ┣ 📄OTPVerification.jsx
+ ┃ ┣ 📄Dashboard.jsx
+ ┃ ┗ 📄VideoMeet.jsx
+ ┣ 📁routes/                # React Router setup and ProtectedRoute
+ ┃ ┗ 📄AppRoutes.jsx
+ ┣ 📁services/              # API calls (auth, meeting, etc.)
+ ┃ ┣ 📄authService.js
+ ┃ ┣ 📄meetingService.js
+ ┃ ┗ 📄socketService.js
+ ┣ 📁context/               # AuthContext, SocketContext, etc.
+ ┃ ┣ 📄AuthContext.jsx
+ ┃ ┗ 📄SocketProvider.jsx
+ ┣ 📁hooks/                 # Custom hooks like useAuth, useSocket, etc.
+ ┣ 📁utils/                 # Helper functions (validators, token utils)
+ ┣ 📄App.jsx                # Root app component
+ ┣ 📄main.jsx               # Vite entry point
+ ┣ 📄index.css              # Tailwind & global styles
+┣ 📄tailwind.config.js      # TailwindCSS configuration
+┣ 📄postcss.config.js       # PostCSS configuration
+┣ 📄vite.config.js          # Vite config
+┣ 📄package.json            # NPM dependencies and scripts
+┗ 📄.gitignore              # Git ignore rules
