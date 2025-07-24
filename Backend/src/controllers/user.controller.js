@@ -34,9 +34,7 @@ const login = async(req, res) => {
                     expiresIn: process.env.JWT_EXPIRES_IN || '1d'
                 }
             )
-
-            user.token = token;
-            await user.save();
+            
             return res.status(httpStatus.OK).json({token: token})
         } else {
             return res.status(httpStatus.UNAUTHORIZED).json({message: "Invalid credentials"})
