@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import bcrypt from 'bcrypt';
 import { User } from "../models/user.model.js";
 
 let otpStore = {}; // { "<email>": { otp, expiresAt } }
@@ -68,7 +69,8 @@ const verifyOTPAndRegister = async (req, res) => {
     if (existingUser) return res.status(409).json({ message: "Username already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, username, password: hashedPassword });
+    const newUser = new User({ name, username, email, password: hashedPassword });
+
     await newUser.save();
 
     delete otpStore[email]; // clean up

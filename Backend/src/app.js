@@ -15,13 +15,11 @@ const server = createServer(app);
 const io = connectToSocket(server);
 
 app.set("PORT", (process.env.PORT || 8080));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.use("/api/v1/auth", authRoutes);
-app.use(cors());
-app.use(express.json({limit: '40KB'}));
-app.use(express.urlencoded({limit: '40KB', extended: true}));
-
-
 app.use("/api/v1/user", userRoutes);
 
 const start = async () => {

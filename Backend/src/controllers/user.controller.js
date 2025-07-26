@@ -8,55 +8,95 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const login = async(req, res) => {
-    const {username, password} = req.body;
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Please provide credentials" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: "User not found" });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (isPasswordCorrect) {
+      const payload = {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+      });
+
+      return res.status(httpStatus.OK).json({ token });
+    } else {
+      return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid credentials" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: `Something went wrong: ${error}` });
+  }
+};
+
+
+// const login = async(req, res) => {
+//     const {username, password} = req.body;
     
-    if( !username || !password) {
-        return res.status(400).json({message: "Please provide credentials"})
-    }
+//     if( !username || !password) {
+//         return res.status(400).json({message: "Please provide credentials"})
+//     }
 
-    try{
-        const user = await User.findOne({username});
-        if(!user) {
-            return res.status(httpStatus.NOT_FOUND).json({message: "User not found"});
-        }
-        let isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if(isPasswordCorrect){
-            const payload = {
-                id: user._id,
-                username: user.username
-            }
-            // let token = crypto.randomBytes(20).toString("hex");
-            const token = jwt.sign(
-                payload,
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: process.env.JWT_EXPIRES_IN || '1d'
-                }
-            )
+//     try{
+//         const user = await User.findOne({username});
+//         if(!user) {
+//             return res.status(httpStatus.NOT_FOUND).json({message: "User not found"});
+//         }
+//         let isPasswordCorrect = await bcrypt.compare(password, user.password);
+//         if(isPasswordCorrect){
+//             const payload = {
+//                 id: user._id,
+//                 username: user.username
+//             }
+//             // let token = crypto.randomBytes(20).toString("hex");
+//             const token = jwt.sign(
+//                 payload,
+//                 process.env.JWT_SECRET,
+//                 {
+//                     expiresIn: process.env.JWT_EXPIRES_IN || '1d'
+//                 }
+//             )
             
-            return res.status(httpStatus.OK).json({token: token})
-        } else {
-            return res.status(httpStatus.UNAUTHORIZED).json({message: "Invalid credentials"})
-        }
+//             return res.status(httpStatus.OK).json({token: token})
+//         } else {
+//             return res.status(httpStatus.UNAUTHORIZED).json({message: "Invalid credentials"})
+//         }
 
-    } catch(error) {
-        return res.status(500).json({message: `Something went wrong: ${error}`});
-    }
-}
+//     } catch(error) {
+//         return res.status(500).json({message: `Something went wrong: ${error}`});
+//     }
+// }
 
 const register = async (req, res) => {
-    const {name, username, password} = req.body;
+    const {name,email, username, password} = req.body;
 
     try{
         const existingUser = await User.findOne({username: username});
         if(existingUser){
             return res.status(httpStatus.FOUND).json({message: "User already exists"});
         }
+        const existingMail = await User.findOne({ email });
+        if(existingMail){
+            return res.status(httpStatus.FOUND).json({ message: "Mail already exists" });
+        }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             name: name,
+            email: email,
             username: username,
             password: hashedPassword
         })
