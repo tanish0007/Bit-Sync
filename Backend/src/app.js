@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { connectToSocket } from './controllers/socketManager.js';
 import userRoutes from './routes/users.routes.js';
 import authRoutes from "./routes/auth.routes.js";
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,7 +16,11 @@ const server = createServer(app);
 const io = connectToSocket(server);
 
 app.set("PORT", (process.env.PORT || 8080));
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // your frontend URL
+  credentials: true,
+}));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
