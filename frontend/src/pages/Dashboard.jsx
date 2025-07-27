@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';  //
 import UserVideoBox from '../components/UserVideoBox';
 import Footer from '../components/Footer';
 import UserNav from '../components/UserNav';
@@ -32,7 +33,8 @@ const Dashboard = () => {
     };
 
     const handleHostMeeting = () => {
-        navigate('/meeting-room');
+        const newRoomId = uuidv4();  // Generate a new room UUID
+        navigate(`/room/${newRoomId}`);  // Redirect to MeetingRoom page with roomId
     };
 
     return (
@@ -45,7 +47,6 @@ const Dashboard = () => {
                     <div>
                         <UserVideoBox />
                     </div>
-
 
                     {/* Join Meeting */}
                     <div className='mt-4 w-full'>
