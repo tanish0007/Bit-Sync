@@ -120,4 +120,13 @@ const getUserDashboard = async (req, res) => {
     });
 };
 
-export {getUserDashboard, login, register, getUserHistory, addToHistory};
+const logout = async (req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        sameSite: "Lax",
+        secure: false
+    })
+    return res.status(200).json({ message: "Logged out successfully" });
+}
+
+export {getUserDashboard, login, register, getUserHistory, addToHistory, logout};
