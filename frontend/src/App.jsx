@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard"; // create this if not done
-
+import Dashboard from "./pages/Dashboard"; 
+import Logout from "./pages/Logout";
 import ProtectedLogin from "./routes/ProtectedLogin";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -36,6 +36,7 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="/logout" element={<Logout />} />
     </Routes>
   );
 };
