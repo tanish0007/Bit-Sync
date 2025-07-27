@@ -1,10 +1,10 @@
-import Nav from '../components/Nav';
 import Footer from '../components/Footer';
+import UserNav from '../components/UserNav';
 
 const Dashboard = () => {
     return(
         <>
-            <Nav />
+            <UserNav />
             Dashboard
             <Footer />
         </>
