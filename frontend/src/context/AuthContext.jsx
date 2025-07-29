@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         });
         if (res.status === 200) {
-          setUser(res.data.user); // ✅ use res.data.user instead of res.user
+          setUser(res.data.user); 
         }
       } catch (err) {
         setUser(null);
