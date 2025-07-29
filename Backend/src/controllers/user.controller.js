@@ -38,6 +38,7 @@ const login = async (req, res) => {
             secure: false, 
             sameSite: "Lax",
             maxAge: 24 * 60 * 60 * 1000, // 1 day
+            domain: "localhost"
         });
         return res.status(httpStatus.OK).json({
             message: "Login successful",
